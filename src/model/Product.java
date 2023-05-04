@@ -52,4 +52,8 @@ public class Product {
     public void setType(ProductType type) {
         this.type = type;
     }
+
+    public int compareTo(Product other) {
+        return this.name.compareTo(other.name);
+    }
 }

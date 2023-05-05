@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 public class BinarySearchTree<T extends Comparable<T>> {
     private TreeNode<T> root;
 
@@ -77,5 +79,17 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
 
         return searchRec(root.right, item);
+    }
+
+    public TreeNode<T> getRoot() {
+        return root;
+    }
+
+    public void inorderTraversal(TreeNode<T> root, ArrayList<T> arrayList) {
+        if (root != null) {
+            inorderTraversal(root.left, arrayList);
+            arrayList.add(root.item);
+            inorderTraversal(root.right, arrayList);
+        }
     }
 }

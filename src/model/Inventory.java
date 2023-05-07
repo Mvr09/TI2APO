@@ -1,5 +1,12 @@
 package model;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -145,6 +152,87 @@ public class Inventory {
             System.out.println(e.getMessage());
         }
     }
+// Aca lo de Persistencia
+    // Load data from JSON files
+    private void loadData() {
+        loadProducts();
+        loadPedidos();
+        loadUsuarios();
+    }
 
+    // Save data to JSON files
+    public void saveData() {
+        saveProducts();
+        savePedidos();
+        saveUsuarios();
+    }
 
+    private void loadProducts() {
+        try (FileReader reader = new FileReader("products.json")) {
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ArrayList<Product>>() {}.getType();
+            ArrayList<Product> loadedProducts = gson.fromJson(reader, listType);
+
+            if (loadedProducts != null) {
+                products = loadedProducts;
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading products.json: " + e.getMessage());
+        }
+    }
+
+    private void saveProducts() {
+        try (FileWriter writer = new FileWriter("products.json")) {
+            Gson gson = new Gson();
+            gson.toJson(products, writer);
+        } catch (IOException e) {
+            System.out.println("Error writing products.json: " + e.getMessage());
+        }
+    }
+
+    private void loadPedidos() {
+        try (FileReader reader = new FileReader("pedidos.json")) {
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ArrayList<Pedido>>() {}.getType();
+            ArrayList<Pedido> loadedPedidos = gson.fromJson(reader, listType);
+
+            if (loadedPedidos != null) {
+                pedidos = loadedPedidos;
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading pedidos.json: " + e.getMessage());
+        }
+    }
+
+    private void savePedidos() {
+        try (FileWriter writer = new FileWriter("pedidos.json")) {
+            Gson gson = new Gson();
+            gson.toJson(pedidos, writer);
+        } catch (IOException e) {
+            System.out.println("Error writing pedidos.json: " + e.getMessage());
+        }
+    }
+
+    private void loadUsuarios() {
+        try (FileReader reader = new FileReader("usuarios.json")) {
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ArrayList<Usuario>>() {}.getType();
+            ArrayList<Usuario> loadedUsuarios = gson.fromJson(reader, listType);
+
+            if (loadedUsuarios != null) {
+                usuarios = loadedUsuarios;
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading usuarios.json: " + e.getMessage());
+        }
+    }
+    private void saveUsuarios() {
+        try (FileWriter writer = new FileWriter("usuarios.json")) {
+            Gson gson = new Gson();
+            gson.toJson(usuarios, writer);
+        } catch (IOException e) {
+            System.out.println("Error writing usuarios.json: " + e.getMessage());
+        }
+    }
 }
+

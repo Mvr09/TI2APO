@@ -13,6 +13,35 @@ public class Inventory {
         this.products = new ArrayList<Product>();
         this.usuarios = new ArrayList<Usuario>();
     }
+    // Method to add a product to ArrayList
+    public void addProduct(String name, double price, String description, int numSold, int numStored, ProductType type) {
+        products.add(new Product(name, price, description, numSold, numStored, type));
+    }
+    // Method using BinaryComparator for product
+    // attribute: name, price, description, numSold, numStored
+    public Product binarySearch(String attribute, String value) {
+        ProductComparator comparator = new ProductComparator(attribute);
+        Collections.sort(products, comparator);
+
+        int low = 0;
+        int high = products.size() - 1;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            Product midProduct = products.get(mid);
+            int comparison = comparator.compare(midProduct, new Product(value, 0, value, ProductType.ROPA_ACCESORIOS));
+
+            if (comparison < 0) {
+                low = mid + 1;
+            } else if (comparison > 0) {
+                high = mid - 1;
+            } else {
+                return midProduct;
+            }
+        }
+        return null; // Return null if no matching product is found
+    }
+
+    //Deprecated, no usaremos bst
     // Method to convert an ArrayList to a BinarySearchTree
     private <T extends Comparable<T>> BinarySearchTree<T> arrayListToBST(ArrayList<T> arrayList) {
         BinarySearchTree<T> bst = new BinarySearchTree<>();

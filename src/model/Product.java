@@ -5,13 +5,19 @@ public class Product implements Comparable<Product> {
     private double price;
     private String description;
     private int numSold = 0;
+
+    private int numStored = 0;
     private ProductType type;
 
-    public Product(String name, double price, ProductType type) {
+    public Product(String name, double price, String description, int numSold, int numStored, ProductType type) {
         this.name = name;
         this.price = price;
+        this.description = description;
+        this.numSold = numSold;
+        this.numStored = numStored;
         this.type = type;
     }
+
 
     public String getName() {
         return name;
@@ -51,6 +57,14 @@ public class Product implements Comparable<Product> {
 
     public void setType(ProductType type) {
         this.type = type;
+    }
+
+    public int getNumStored() {
+        return numStored;
+    }
+
+    public void setNumStored(int numStored) {
+        this.numStored = numStored;
     }
 
     public int compareTo(Product other) {

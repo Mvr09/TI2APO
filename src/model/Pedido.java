@@ -10,12 +10,37 @@ public class Pedido {
     private Date date;
     private ArrayList<Product> products;
 
-    public Pedido(int id, String username, double price, Date date, ArrayList<Product> products) {
+    public Pedido(int id, String username, double price, Date date) {
         this.id = id;
         this.username = username;
         this.price = price;
         this.date = date;
         this.products = new ArrayList<Product>();
+    }
+
+    public void addProductToOrder(Inventory inventory, String productName, int quantity) {
+        // Search for the product in the inventory
+        Product product = inventory.searchProduct("name", productName);
+
+        if (product == null) {
+            throw new IllegalArgumentException("Product not found in the inventory.");
+        }
+
+        if (quantity > product.getNumStored()) {
+            throw new IllegalArgumentException("Cannot order more than the available stock.");
+        }
+
+        // Decrease the numStored of the product in the inventory and increase its numSold
+        product.setNumStored(product.getNumStored() - quantity);
+        product.setNumSold(product.getNumSold() + quantity);
+
+        // Create a new product with the order quantity and add it to the order's product list
+        Product productInOrder = new Product(product.getName(), product.getPrice(), product.getDescription(),
+                product.getNumSold(), quantity, product.getType());
+        this.products.add(productInOrder);
+
+        // Update the total price of the order
+        this.price += product.getPrice() * quantity;
     }
 
     public int getId() {

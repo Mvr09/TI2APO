@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 public class Inventory {
     private ArrayList<Pedido> pedidos;
@@ -115,8 +116,35 @@ public class Inventory {
         return new Product(name, price, description, numSold, numStored, type);
     }
 
+    public Pedido createPedido(String username) {
+        int newId = pedidos.size() + 1;
+        Date currentDate = new Date();
+        Pedido newPedido = new Pedido(newId, username, 0, currentDate);
+        pedidos.add(newPedido);
+        return newPedido;
+    }
+
+    public void addProductToOrder(int orderId, String productName, int quantity) {
+        Pedido foundPedido = null;
+
+        for (Pedido pedido : pedidos) {
+            if (pedido.getId() == orderId) {
+                foundPedido = pedido;
+                break;
+            }
+        }
+
+        if (foundPedido == null) {
+            System.out.println("Order not found.");
+            return;
+        }
+
+        try {
+            foundPedido.addProductToOrder(this, productName, quantity);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
 }
-
-
-//Inventory se encarga de guardar la informacion de los usuarios, los productos y las órdenes

@@ -21,7 +21,7 @@ public class InventoryTest {
     @Test
     public void testAddProduct() {
         inventory.addProduct("ProductC", 30.0, "A popular book", 7, 50, "LIBROS");
-        Product foundProduct = inventory.binarySearch("name", "ProductC");
+        Product foundProduct = inventory.searchProduct("name", "ProductC");
         assertNotNull(foundProduct);
         assertEquals("ProductC", foundProduct.getName());
         assertEquals(30.0, foundProduct.getPrice(), 0.0);
@@ -29,6 +29,18 @@ public class InventoryTest {
         assertEquals(7, foundProduct.getNumSold());
         assertEquals(50, foundProduct.getNumStored());
         assertEquals(ProductType.LIBROS, foundProduct.getType());
+
+        // Adding an identical product to verify its increasing the amount
+        inventory.addProduct("ProductC", 30.0, "A popular book", 0, 25, "LIBROS");
+        foundProduct = inventory.searchProduct("name", "ProductC");
+        assertNotNull(foundProduct);
+        assertEquals("ProductC", foundProduct.getName());
+        assertEquals(30.0, foundProduct.getPrice(), 0.0);
+        assertEquals("A popular book", foundProduct.getDescription());
+        assertEquals(7, foundProduct.getNumSold());
+        assertEquals(75, foundProduct.getNumStored());
+        assertEquals(ProductType.LIBROS, foundProduct.getType());
+
     }
 
     @Test

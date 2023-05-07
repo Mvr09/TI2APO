@@ -14,8 +14,17 @@ public class Inventory {
         this.products = new ArrayList<Product>();
         this.usuarios = new ArrayList<Usuario>();
     }
+
+    // Checks for duplicate and adds to numStored if found. Criteria is name
     public void addProduct(String name, double price, String description, int numSold, int numStored, String type) {
-        products.add(new Product(name, price, description, numSold, numStored, ProductType.valueOf(type)));
+        Product existingProduct = searchProduct("name", name);
+        if (existingProduct != null &&
+                existingProduct.getName() == name &&
+                existingProduct.getPrice() == price) {
+            existingProduct.setNumStored(existingProduct.getNumStored() + numStored);
+        } else {
+            products.add(new Product(name, price, description, numSold, numStored, ProductType.valueOf(type)));
+        }
     }
 
     public Product searchProduct(String attribute, String value) {
@@ -106,52 +115,7 @@ public class Inventory {
         return new Product(name, price, description, numSold, numStored, type);
     }
 
-    //Deprecated, no usaremos bst
-    // Method to convert an ArrayList to a BinarySearchTree
-    private <T extends Comparable<T>> BinarySearchTree<T> arrayListToBST(ArrayList<T> arrayList) {
-        BinarySearchTree<T> bst = new BinarySearchTree<>();
-        // Iterate through the arrayList and insert each item into the bst
-        for (T item : arrayList) {
-            bst.insert(item);
-        }
-        return bst;
-    }
 
-    // Method to convert a BinarySearchTree to an ArrayList
-    private <T extends Comparable<T>> ArrayList<T> bstToArraylist(BinarySearchTree<T> bst) {
-        ArrayList<T> arrayList = new ArrayList<>();
-        // Perform inorder traversal to get the sorted elements in the arrayList
-        bst.inorderTraversal(bst.getRoot(), arrayList);
-        return arrayList;
-    }
-
-    // Method to insert a product into the products ArrayList
-    public void insertProduct(Product product) {
-        // Convert products ArrayList to a BinarySearchTree
-        BinarySearchTree<Product> bst = arrayListToBST(products);
-        // Insert the product into the bst
-        bst.insert(product);
-        // Convert bst back to ArrayList and update the products ArrayList
-        products = bstToArraylist(bst);
-    }
-
-    // Method to delete a product from the products ArrayList
-    public void deleteProduct(Product product) {
-        // Convert products ArrayList to a BinarySearchTree
-        BinarySearchTree<Product> bst = arrayListToBST(products);
-        // Remove the product from the bst
-        bst.remove(product);
-        // Convert bst back to ArrayList and update the products ArrayList
-        products = bstToArraylist(bst);
-    }
-
-    // Method to search for a product in the products ArrayList
-    public Product searchProduct(Product product) {
-        // Convert products ArrayList to a BinarySearchTree
-        BinarySearchTree<Product> bst = arrayListToBST(products);
-        // Search for the product in the bst
-        return bst.search(product);
-    }
 }
 
 

@@ -18,6 +18,10 @@ public class Product implements Comparable<Product> {
         this.type = type;
     }
 
+    public Product() {
+        // Empty constructor for creating a temporary product object
+    }
+
     // Constructor for searching by name or description
     public Product(String value, String attribute) {
         if (attribute.equals("name")) {

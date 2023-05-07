@@ -8,15 +8,53 @@ public class Inventory {
     private ArrayList<Product> products;
     private ArrayList<Usuario> usuarios;
 
-    public Inventory(ArrayList<Pedido> pedidos, ArrayList<Product> products, ArrayList<Usuario> usuarios) {
+    // Default constructor
+    public Inventory() {
         this.pedidos = new ArrayList<Pedido>();
         this.products = new ArrayList<Product>();
         this.usuarios = new ArrayList<Usuario>();
     }
-    // Method to add a product to ArrayList
-    public void addProduct(String name, double price, String description, int numSold, int numStored, ProductType type) {
-        products.add(new Product(name, price, description, numSold, numStored, type));
+    public void addProduct(String name, double price, String description, int numSold, int numStored, String type) {
+        products.add(new Product(name, price, description, numSold, numStored, ProductType.valueOf(type)));
     }
+
+    public Product searchProduct(String attribute, String value) {
+        ProductComparator comparator = new ProductComparator(attribute);
+        Collections.sort(products, comparator);
+
+        Product searchProduct = new Product();
+        switch (attribute) {
+            case "name":
+                searchProduct.setName(value);
+                break;
+            case "price":
+                searchProduct.setPrice(Double.parseDouble(value));
+                break;
+            case "description":
+                searchProduct.setDescription(value);
+                break;
+            case "numSold":
+                searchProduct.setNumSold(Integer.parseInt(value));
+                break;
+            case "numStored":
+                searchProduct.setNumStored(Integer.parseInt(value));
+                break;
+            case "type":
+                searchProduct.setType(ProductType.valueOf(value));
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid attribute: " + attribute);
+        }
+
+        int index = Collections.binarySearch(products, searchProduct, comparator);
+        if (index >= 0) {
+            return products.get(index);
+        } else {
+            return null;
+        }
+    }
+
+
     // Method using BinaryComparator for product
     // attribute: name, price, description, numSold, numStored
     public Product binarySearch(String attribute, String value) {

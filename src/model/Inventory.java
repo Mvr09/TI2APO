@@ -28,7 +28,21 @@ public class Inventory {
         while (low <= high) {
             int mid = (low + high) / 2;
             Product midProduct = products.get(mid);
-            int comparison = comparator.compare(midProduct, new Product(value, 0, value, ProductType.ROPA_ACCESORIOS));
+            // Creating a new temporal product with the searched attribute to compare
+            Product tempProduct;
+            if (attribute.equals("name") || attribute.equals("description")) {
+                tempProduct = new Product(value, attribute);
+            } else if (attribute.equals("price")) {
+                tempProduct = new Product(Double.parseDouble(value));
+            } else if (attribute.equals("numSold")) {
+                tempProduct = new Product(Integer.parseInt(value));
+            } else if (attribute.equals("type")) {
+                tempProduct = new Product(ProductType.valueOf(value));
+            } else {
+                return null; // Invalid attribute
+            }
+
+            int comparison = comparator.compare(midProduct, tempProduct);
 
             if (comparison < 0) {
                 low = mid + 1;
@@ -39,6 +53,19 @@ public class Inventory {
             }
         }
         return null; // Return null if no matching product is found
+    }
+
+
+
+    private Product createTempProductForComparison(String attribute, String value) {
+        String name = attribute.equals("name") ? value : "";
+        double price = attribute.equals("price") ? Double.parseDouble(value) : 0;
+        String description = attribute.equals("description") ? value : "";
+        int numSold = attribute.equals("numSold") ? Integer.parseInt(value) : 0;
+        int numStored = attribute.equals("numStored") ? Integer.parseInt(value) : 0;
+        ProductType type = ProductType.ROPA_ACCESORIOS;
+
+        return new Product(name, price, description, numSold, numStored, type);
     }
 
     //Deprecated, no usaremos bst

@@ -18,7 +18,29 @@ public class Product implements Comparable<Product> {
         this.type = type;
     }
 
+    // Constructor for searching by name or description
+    public Product(String value, String attribute) {
+        if (attribute.equals("name")) {
+            this.name = value;
+        } else {
+            this.description = value;
+        }
+    }
 
+    // Constructor for searching by price
+    public Product(double value) {
+        this.price = value;
+    }
+
+    // Constructor for searching by numSold
+    public Product(int value) {
+        this.numSold = value;
+    }
+
+    // Constructor for searching by type
+    public Product(ProductType type) {
+        this.type = type;
+    }
     public String getName() {
         return name;
     }

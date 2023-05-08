@@ -96,4 +96,9 @@ public class Product implements Comparable<Product> {
     public int compareTo(Product other) {
         return this.name.compareTo(other.name);
     }
+
+    @Override
+    public String toString() {
+        return name + ", " + price + ", " + description + ", " + numSold + ", " + numStored + ", " + type + '\n';
+    }
 }

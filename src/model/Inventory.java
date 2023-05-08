@@ -143,39 +143,32 @@ public class Inventory {
             System.out.println(e.getMessage());
         }
     }
-    public List<Product> searchByPriceRange(List<Product> products, double minPrice, double maxPrice) {
-        List<Product> result = new ArrayList<>();
-        for (Product product : products) {
-            if (product.getPrice() >= minPrice && product.getPrice() <= maxPrice) {
-                result.add(product);
-            }
-        }
-        return result;
-    }
-
-    public List<Product> searchByQuantityRange(List<Product> products, int minQuantity, int maxQuantity) {
-        List<Product> result = new ArrayList<>();
+    public List<String> searchByQuantityRange(int minQuantity, int maxQuantity) {
+        List<String> result = new ArrayList<>();
         for (Product product : products) {
             if (product.getNumStored() >= minQuantity && product.getNumStored() <= maxQuantity) {
-                result.add(product);
+                result.add(product.toString());
             }
         }
         return result;
     }
 
-    public List<Product> searchByNameRange(List<Product> products, String prefixStart, String prefixEnd) {
-        List<Product> result = new ArrayList<>();
+    public List<String> searchByNameRange(String prefixStart, String prefixEnd) {
+        List<String> result = new ArrayList<>();
         for (Product product : products) {
             String name = product.getName();
             if (name != null && name.compareToIgnoreCase(prefixStart) >= 0 && name.compareToIgnoreCase(prefixEnd) <= 0) {
-                result.add(product);
+                result.add(product.toString());
             }
         }
         return result;
     }
 
-    public List<Product> sort(List<Product> products, Comparator<Product> comparator, boolean ascending) {
-        List<Product> result = new ArrayList<>(products);
+    public List<String> sort(Comparator<String> comparator, boolean ascending) {
+        List<String> result = new ArrayList<>();
+        for (Product product : products) {
+            result.add(product.toString());
+        }
         if (ascending) {
             Collections.sort(result, comparator);
         } else {
@@ -184,5 +177,28 @@ public class Inventory {
         return result;
     }
 
-
+    public Comparator<String> getComparatorForAttribute(String attribute) {
+        // Return a suitable Comparator<String> based on the attribute
+        switch (attribute) {
+            case "name":
+                return Comparator.comparing(String::toString);
+            case "price":
+                // Extract price from the product string and compare
+                return Comparator.comparingDouble(s -> Double.parseDouble(s.split(",")[1].trim()));
+            case "description":
+                // Extract description from the product string and compare
+                return Comparator.comparing(s -> s.split(",")[2].trim());
+            case "numSold":
+                // Extract numSold from the product string and compare
+                return Comparator.comparingInt(s -> Integer.parseInt(s.split(",")[3].trim()));
+            case "numStored":
+                // Extract numStored from the product string and compare
+                return Comparator.comparingInt(s -> Integer.parseInt(s.split(",")[4].trim()));
+            case "type":
+                // Extract type from the product string and compare
+                return Comparator.comparing(s -> s.split(",")[5].trim());
+            default:
+                throw new IllegalArgumentException("Invalid attribute: " + attribute);
+        }
+    }
 }

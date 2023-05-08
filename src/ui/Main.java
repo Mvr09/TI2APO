@@ -5,10 +5,15 @@ import model.Inventory;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class Main {
     public static void main(String[] args) {
-        Inventory inventoryController = new Inventory();
+        Inventory inventoryController = loadData();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -21,10 +26,11 @@ public class Main {
             System.out.println("6. Search by attribute");
             System.out.println("0. Exit");
 
-            System.out.print("Please enter your choice (1-4): ");
+            System.out.print("Please enter your choice (0-6): ");
             int choice = scanner.nextInt();
 
             if (choice == 0) {
+                saveData(inventoryController);
                 break;
             }
 
@@ -114,5 +120,22 @@ public class Main {
         }
 
         scanner.close();
+    }
+
+    private static void saveData(Inventory inventory) {
+        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("inventory_data.ser"))) {
+            objectOutputStream.writeObject(inventory);
+        } catch (IOException e) {
+            System.out.println("Error saving data: " + e.getMessage());
+        }
+    }
+
+    private static Inventory loadData() {
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("inventory_data.ser"))) {
+            return (Inventory) objectInputStream.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("No data found, initializing an empty inventory.");
+            return new Inventory();
+        }
     }
 }

@@ -1,8 +1,9 @@
 package model;
 
 import java.util.*;
+import java.io.Serializable;
 
-public class Inventory {
+public class Inventory implements Serializable {
     private ArrayList<Pedido> pedidos;
     private ArrayList<Product> products;
     private ArrayList<Usuario> usuarios;

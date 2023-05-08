@@ -1,8 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
 
 public class Inventory {
     private ArrayList<Pedido> pedidos;
@@ -116,7 +114,6 @@ public class Inventory {
     }
 
 
-
     private Product createTempProductForComparison(String attribute, String value) {
         String name = attribute.equals("name") ? value : "";
         double price = attribute.equals("price") ? Double.parseDouble(value) : 0;
@@ -170,7 +167,7 @@ public class Inventory {
     public List<Product> searchByQuantityRange(List<Product> products, int minQuantity, int maxQuantity) {
         List<Product> result = new ArrayList<>();
         for (Product product : products) {
-            if (product.getAvailableQuantity() >= minQuantity && product.getAvailableQuantity() <= maxQuantity) {
+            if (product.getNumStored() >= minQuantity && product.getNumStored() <= maxQuantity) {
                 result.add(product);
             }
         }

@@ -77,7 +77,7 @@ public class Inventory {
 
     // Method using BinaryComparator for product
     // attribute: name, price, description, numSold, numStored
-    public Product binarySearch(String attribute, String value) {
+    public String binarySearch(String attribute, String value) {
         ProductComparator comparator = new ProductComparator(attribute);
         Collections.sort(products, comparator);
 
@@ -86,19 +86,8 @@ public class Inventory {
         while (low <= high) {
             int mid = (low + high) / 2;
             Product midProduct = products.get(mid);
-            // Creating a new temporal product with the searched attribute to compare
-            Product tempProduct;
-            if (attribute.equals("name") || attribute.equals("description")) {
-                tempProduct = new Product(value, attribute);
-            } else if (attribute.equals("price")) {
-                tempProduct = new Product(Double.parseDouble(value));
-            } else if (attribute.equals("numSold")) {
-                tempProduct = new Product(Integer.parseInt(value));
-            } else if (attribute.equals("type")) {
-                tempProduct = new Product(ProductType.valueOf(value));
-            } else {
-                return null; // Invalid attribute
-            }
+
+            Product tempProduct = createTempProductForComparison(attribute, value);
 
             int comparison = comparator.compare(midProduct, tempProduct);
 
@@ -107,7 +96,7 @@ public class Inventory {
             } else if (comparison > 0) {
                 high = mid - 1;
             } else {
-                return midProduct;
+                return midProduct.toString();
             }
         }
         return null; // Return null if no matching product is found

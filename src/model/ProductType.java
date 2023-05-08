@@ -1,0 +1,12 @@
+package model;
+
+public enum ProductType {
+    ALIMENTO_BEBIDA,
+    BELLEZA_Y_CUIDADO_PERSONAL,
+    DEPORTES,
+    ELECTRONICA,
+    JUGUETES_JUEGOS,
+    LIBROS,
+    STATIONERY,
+    ROPA_ACCESORIOS
+}

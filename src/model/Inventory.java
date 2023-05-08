@@ -28,6 +28,18 @@ public class Inventory {
         }
     }
 
+    public void deleteProduct(String name) {
+        for (int i = 0; i < products.size(); i++) {
+            Product product = products.get(i);
+            if (product.getName().equals(name)) {
+                products.remove(i);
+                System.out.println("Product " + name + " deleted successfully.");
+                return;
+            }
+        }
+        System.out.println("Product " + name + " not found.");
+    }
+
     public Product searchProduct(String attribute, String value) {
         ProductComparator comparator = new ProductComparator(attribute);
         Collections.sort(products, comparator);

@@ -2,9 +2,12 @@ package test;
 
 import model.Inventory;
 import model.Pedido;
+import model.Product;
 import model.ProductType;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -13,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class PedidoTest {
     private Inventory inventory;
 
-    @BeforeEach
+
     public void setUp() {
         inventory = new Inventory();
         inventory.addProduct("T-shirt", 19.99, "A comfortable T-shirt", 10, 50, "ROPA_ACCESORIOS");
@@ -64,4 +67,35 @@ public class PedidoTest {
 
         assertEquals(48, inventory.searchProduct("name", "T-shirt").getNumStored());
     }
+    @Test
+    public void deleteProduct1(){
+        List<Product> products = new ArrayList<>();
+        Inventory inventory = new Inventory();
+        inventory.addProduct("ProductA", 10.0, "An electronic gadget", 5, 20, "ELECTRONICA");
+        inventory.addProduct("ProductB", 20.0, "A fun toy", 3, 15, "JUGUETES_JUEGOS");
+        inventory.addProduct("ProductC",5.00,"A best seller book", 7, 15, "LIBROS");
+
+        inventory.deleteProduct("ProductB");
+        assertEquals(0, products.size());
+        assertEquals("ProducA", products.get(0).getName());
+        assertEquals("ProductC", products.get(2).getName());
+
+    }
+    @Test
+    public void deleteProduct2() {
+        List<Product> products = new ArrayList<>();
+        Inventory inventory = new Inventory();
+        inventory.addProduct("ProductB", 10.0, "An electronic gadget", 5, 20, "ELECTRONICA");
+        inventory.addProduct("ProductC", 20.0, "A fun toy", 3, 15, "JUGUETES_JUEGOS");
+        inventory.addProduct("ProductD", 5.00, "A best seller book", 7, 15, "LIBROS");
+
+
+        inventory.deleteProduct("ProductB");
+        assertEquals(0, products.size());
+        assertEquals("ProductC", products.get(0).getName());
+        assertEquals("ProductD", products.get(2).getName());
+    }
+
+
+
 }

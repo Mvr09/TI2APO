@@ -3,7 +3,8 @@ package model;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Pedido {
+public class
+Pedido {
     private int id;
     private String username;
     private double price;

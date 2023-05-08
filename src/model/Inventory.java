@@ -145,6 +145,46 @@ public class Inventory {
             System.out.println(e.getMessage());
         }
     }
+    public List<Product> searchByPriceRange(List<Product> products, double minPrice, double maxPrice) {
+        List<Product> result = new ArrayList<>();
+        for (Product product : products) {
+            if (product.getPrice() >= minPrice && product.getPrice() <= maxPrice) {
+                result.add(product);
+            }
+        }
+        return result;
+    }
+
+    public List<Product> searchByQuantityRange(List<Product> products, int minQuantity, int maxQuantity) {
+        List<Product> result = new ArrayList<>();
+        for (Product product : products) {
+            if (product.getAvailableQuantity() >= minQuantity && product.getAvailableQuantity() <= maxQuantity) {
+                result.add(product);
+            }
+        }
+        return result;
+    }
+
+    public List<Product> searchByNameRange(List<Product> products, String prefixStart, String prefixEnd) {
+        List<Product> result = new ArrayList<>();
+        for (Product product : products) {
+            String name = product.getName();
+            if (name != null && name.compareToIgnoreCase(prefixStart) >= 0 && name.compareToIgnoreCase(prefixEnd) <= 0) {
+                result.add(product);
+            }
+        }
+        return result;
+    }
+
+    public List<Product> sort(List<Product> products, Comparator<Product> comparator, boolean ascending) {
+        List<Product> result = new ArrayList<>(products);
+        if (ascending) {
+            Collections.sort(result, comparator);
+        } else {
+            Collections.sort(result, Collections.reverseOrder(comparator));
+        }
+        return result;
+    }
 
 
 }
